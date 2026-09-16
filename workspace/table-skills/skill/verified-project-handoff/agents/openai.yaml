@@ -1,4 +1,4 @@
 interface:
   display_name: "Verified Project Handoff"
   short_description: "Compress and verify a manual long-task handoff"
-  default_prompt: "Use $verified-project-handoff to save the minimum recovery facts and complete a verified manual handoff."
+  default_prompt: "Use $verified-project-handoff to save minimal recovery facts and complete a verifiable manual handoff."

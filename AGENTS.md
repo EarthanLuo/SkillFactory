@@ -17,3 +17,4 @@
 - Root-level shared folders such as `templates/` must not be treated as Skill resources. If a template is needed by a Skill, place it under that Skill's `assets/templates/` and keep any bundled copy synchronized.
 - Add only resources that the Skill actually uses; do not create empty convention directories or copy unrelated templates into a Skill.
 - Keep `SKILL.md` concise and load detailed material from its bundled resources only when needed.
+- For newly generated Portable Skills, provide an English default version and a Chinese companion copy in a separate self-contained Skill directory when a Chinese copy is requested; keep both versions aligned in behavior and boundaries.

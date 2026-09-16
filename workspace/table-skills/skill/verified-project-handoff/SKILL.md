@@ -1,46 +1,46 @@
 ---
 name: verified-project-handoff
-description: 在用户明确要求保存并交接长任务时，把当前进度压缩为最小事实包，完成可核验的手动交接；不因普通“继续”或上下文压缩自动触发。
+description: When the user explicitly requests saving and handing off a long-running task, compress the current state into minimal recovery facts and complete a verifiable manual handoff; do not trigger from ordinary continuation or context compaction.
 metadata:
-  short-description: 可核验的长任务手动交接
+  short-description: Verifiable manual long-task handoff
 ---
 
-# 可核验的项目交接
+# Verifiable Project Handoff
 
-本 Skill 用于一次明确的手动交接。它把当前任务压缩成接手方真正需要的事实，再完成交接核验；不安装、发布、删除、提交或修改无关配置，也不使用 Hook 自动触发。
+Use this Skill for one explicitly requested manual handoff. Compress the current task into facts the receiving task actually needs, then verify the handoff. Do not install, publish, delete, commit, or change unrelated configuration, and do not trigger from Hooks.
 
-## 触发边界
+## Trigger boundary
 
-- 仅在用户明确要求“保存并交接”“新建接手任务并继续”或显式调用本 Skill 时执行。
-- 普通“继续”、单纯压缩、提醒或仅查看状态不触发交接。
-- 一次明确调用覆盖本 Skill 内的保存、创建、核验、发送继续指令和打开接手任务；遇到超出原授权的新动作时停下。
+- Run only when the user explicitly requests saving and handing off, creating a receiving task and continuing, or explicitly invokes this Skill.
+- Ordinary “continue,” compaction alone, reminders, and read-only status checks do not trigger a handoff.
+- One explicit invocation covers saving, creating, verifying, sending the continuation instruction, and opening the receiving task within this Skill. Stop at actions outside the original authorization.
 
-## 工作流
+## Workflow
 
-1. **收拢事实。** 只保留恢复下一步所需的信息：目标与完成标准、工作目录和版本、权威资料、已确认决定与限制、Agent 建议、未决问题、已完成／进行中／未做／未验证的进展、成果位置、运行任务、下一步、前置条件和验收方法。未知写“未确认”，未验证写“未验证”；不要复制聊天全文。
-2. **写入既有载体。** 优先增量更新项目已有状态文件；没有现成载体时使用项目根目录的 `PROJECT_STATE.md`。写入前重读目标部分并合并并发改动，不用旧副本覆盖他人内容。凭据不写入。
-3. **回读校验。** 检查文件确实写入、路径正确、引用可访问、关键决定与下一步没有偏离用户要求。记录本次交接的唯一编号；区分“材料已核对”“等待接手核验”“准备接续”“已接手”“受阻”。
-4. **建立接手入口。** 有任务创建能力时，创建一个唯一接手任务，开场先要求只读核对目录、交接编号、关键成果、限制和第一步；没有创建能力时，交付可复制的手动开场白和材料路径。不要因回执不明而重复创建。
-5. **核验后转移修改权。** 只有接手方返回的目录、编号、版本／成果、限制和第一步都一致，且没有阻止接续的差异，才发送明确的继续指令。把“已创建／已派发，接续待验证”与“已接手”分开报告；仅有“准备开始”不能算已接手。
-6. **完成或降级。** 通过任务状态或首个实际动作验证接续；失败、工具缺失、权限不足或结果未知时保留准确状态和手动入口，不盲目重试、不让源任务与接手任务并行修改同一业务内容。
+1. **Gather facts.** Keep only what is needed to resume: goal and acceptance criteria, working directory and version, authoritative materials, confirmed decisions and constraints, agent suggestions, unresolved questions, progress marked done/in progress/not started/unverified, artifact locations, running tasks, next step, prerequisites, and verification method. Write “unconfirmed” for unknowns and “unverified” for unchecked claims; do not copy the full chat.
+2. **Write to the existing carrier.** Prefer an incremental update to the project’s existing state file. If none exists, use `PROJECT_STATE.md` at the project root. Re-read the target before writing and merge concurrent changes; never overwrite another task with an old copy. Do not write credentials.
+3. **Read back and verify.** Confirm the file was written, the path is correct, references are accessible, and decisions and next steps match the user’s request. Record one unique handoff ID and distinguish `materials checked`, `awaiting receiver verification`, `ready to continue`, `handed off`, and `blocked`.
+4. **Create the receiving entry point.** If task creation is available, create exactly one receiving task whose opening instruction requests a read-only check of the directory, handoff ID, key artifacts, constraints, and first step. If creation is unavailable, provide a copyable manual opening message and artifact path. Do not create duplicates when a receipt is ambiguous.
+5. **Transfer write authority after verification.** Send a clear continuation instruction only after the receiver confirms the directory, ID, versions/artifacts, constraints, and first step, with no blocking discrepancy. Report `created/dispatched; continuation pending verification` separately from `handed off`; a reply saying only “ready to start” is insufficient evidence.
+6. **Finish or degrade safely.** Verify the first real action or task status. If verification fails, a tool is unavailable, permission is missing, or a result is unknown, preserve the accurate state and manual entry point; do not blindly retry or let source and receiving tasks modify the same business files in parallel.
 
-## 交接记录模板
+## Handoff record template
 
 ```markdown
-交接编号：
-源任务／工作目录：
-目标与完成标准：
-关键文件、版本与成果：
-已确认决定与限制：
-Agent 建议／自行选择：
-未决与未知：
-当前进展（已完成／进行中／未做／未验证）：
-下一步与验收方法：
-授权范围：
-接手任务：
-交接状态：材料已核对｜等待接手核验｜准备接续｜已接手｜受阻
+Handoff ID:
+Source task / working directory:
+Goal and acceptance criteria:
+Key files, versions, and artifacts:
+Confirmed decisions and constraints:
+Agent suggestions / local choices:
+Unresolved and unknown:
+Progress (done / in progress / not started / unverified):
+Next step and verification method:
+Authorized scope:
+Receiving task:
+Handoff status: materials checked | awaiting receiver verification | ready to continue | handed off | blocked
 ```
 
-## 输出要求
+## Output requirements
 
-先用简短文字说明交接状态、证据和第一步，再给出材料路径或接手任务入口。不得把建议写成用户决定，不得把保存成功或创建成功写成完整交接，不得声称未核验的内容已恢复。
+Start with a brief handoff status, evidence, and first step, then provide the artifact path or receiving-task entry point. Do not present suggestions as user decisions, saving or creation as a completed handoff, or unverified content as restored context.
