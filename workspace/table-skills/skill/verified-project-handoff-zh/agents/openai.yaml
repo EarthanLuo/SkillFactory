@@ -1,4 +1,0 @@
-interface:
-  display_name: "可核验的项目交接"
-  short_description: "压缩并核验长任务的手动交接"
-  default_prompt: "使用 $verified-project-handoff-zh 保存最小恢复事实，并完成一次可核验的手动交接。"
