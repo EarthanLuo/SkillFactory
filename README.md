@@ -1,95 +1,96 @@
 # Skill Foundry
 
-English | [中文](README.zh.md)
+Skill Foundry is a GitHub repository that installs as one Codex plugin. It helps turn experience into reusable Skills.
 
-Skill Foundry is a small, Markdown-first workspace for turning useful experience into portable, iterative Agent Skills.
+The three built-in Skills are:
 
-It helps you:
+- `reverse-experience` — extract a reusable idea;
+- `internalize-experience` — decide whether it fits your work;
+- `evolve-skill` — improve a Skill after real use.
 
-1. reverse-engineer an experience from a source;
-2. discuss whether and how it applies to your own context;
-3. create a portable Skill only after confirmation;
-4. record real usage feedback;
-5. evolve the Skill after a later discussion.
+## 1. Install once
 
-## Factory Skills
+In the Codex desktop app, open **Plugins Directory**, choose the marketplace that contains **Skill Foundry**, and click **Install**.
 
-- `factory/reverse-experience`: source → Source + Extraction. It reconstructs the problem, method, assumptions, boundaries, and transferable experience.
-- `factory/internalize-experience`: discusses an Extraction against the user's context and records an explicit decision. It may create or update a Portable Skill only after user confirmation.
-- `factory/evolve-skill`: records real feedback first, then discusses whether a Portable Skill should change. It writes an Evolution record only after confirmation.
-
-These are user-triggered tools. Foundry does not enforce a sequence, run an automatic pipeline, or maintain a central state machine.
-
-They are also bundled for project-local discovery under `.agents/skills/`, so this project is ready to use after checkout. The `factory/` copies remain the human-readable source layout.
-
-## Workspace
-
-Each project under `workspace/` separates two concerns:
-
-- `skill/` is the current, independently copyable Portable Skill.
-- `memory/` is the traceable production history: sources, extractions, discussions, feedback, and evolution records.
-
-Copying `workspace/<project>/skill/` must be sufficient to use the Skill elsewhere. It must not refer to `../memory/`.
-
-## Basic usage
-
-1. Open or create a project under `workspace/`.
-2. Invoke `reverse-experience` with a video, article, paper, tutorial, conversation, or personal success/failure.
-3. Invoke `internalize-experience` when you want to test the idea against your own situation.
-4. Create or change the Portable Skill only after explicitly confirming the proposed behavior.
-5. After using it in real work, invoke `evolve-skill` with what happened. Feedback is recorded before any change is proposed.
-
-See `examples/research-update/` for a compact complete lifecycle.
-
-### Getting started
+If the marketplace is not listed, add this repository first:
 
 ```bash
-git clone <this-repo> && cd SkillFactory
+codex plugin marketplace add EarthanLuo/SkillFactory
 ```
 
-The three Factory Skills are already discoverable under `.agents/skills/`, so no separate install step is required in this project. In a chat session, trigger them by name:
+Then restart Codex and install **Skill Foundry**.
 
-- “reverse-experience from this video/article: <source>”
-- “internalize-experience for EXT-XXXXXXXX-XXX in my context”
-- “evolve-skill from what actually happened when I used <skill>”
+## 2. Update from GitHub
 
-### Creating a new project
+After new commits are pushed to this repository or your fork:
 
-1. Create `workspace/<project-name>/` with a `PROJECT.md`, plus empty `skill/` and `memory/` directories.
-2. Copy any Skill's `assets/templates/PROJECT.md` as a starting point.
-3. Run `reverse-experience` to write `memory/sources/` and `memory/extractions/`.
-4. Keep `memory/INDEX.md` updated as the traceability entry point for the project.
+```bash
+codex plugin marketplace upgrade skill-foundry
+```
 
-### Using a Portable Skill elsewhere
+The marketplace points to the repository root. The whole repository is updated as one plugin; no manual copying is needed.
 
-Copy only the Skill directory, for example `workspace/table-skills/skill/verified-project-handoff/`. It must work on its own: it may not reference `../memory/`, the workspace root, or Factory Skills. When a Chinese copy is requested, it is stored as `SKILL.zh-CN.md` beside `SKILL.md` in the same directory.
+## 3. Use the Skills
 
-## Available Portable Skills
+Call a Skill by name in a new Codex chat:
 
-Both artifacts below live under `workspace/table-skills/`, which was produced from a reverse-engineering pass over an external repository and then refined through recorded feedback and evolutions. The full history is in `workspace/table-skills/memory/`.
+```text
+Use reverse-experience on this article: <link or text>
+```
 
-### `verified-project-handoff`
+```text
+Use internalize-experience for EXT-20260917-001 in my project.
+```
 
-- Path: `workspace/table-skills/skill/verified-project-handoff/`
-- Purpose: on an explicit user request, compress a long-running task into the minimum facts a receiver needs, then complete a verifiable manual handoff.
-- Pairs with a Chinese copy at `SKILL.zh-CN.md` in the same directory.
-- Boundaries: manual trigger only, no Hooks, no auto-continuation; never writes credentials; does not claim a handoff succeeded until the receiver confirms directory, ID, artifacts, constraints, and first step.
+```text
+Use evolve-skill based on what happened when I used <skill-name>.
+```
 
-### `chat-research-stand-in`
+Recommended order:
 
-- Path: `workspace/table-skills/skill/chat-research-stand-in/`
-- Purpose: delegate one bounded, research-heavy task to a separate desktop ChatGPT chat acting as a constrained research subagent, then wait, recover, and verify a compact decision package to protect the coordinating task's context.
-- Bundled helpers: `scripts/stand_in_package.py` (deterministic task packaging and pre-model filtering) and `scripts/host_wait.mjs` (bounded host-side status waiting).
-- Boundaries: experimental, desktop-host only; no Astra testing, no generic browser automation; preparing a package does not authorize sending it; external answers stay untrusted until verified.
+```text
+experience → reverse-experience → internalize-experience → Skill → evolve-skill
+```
 
-### Example Skill
+This is a recommendation, not an automatic workflow. A Skill changes only after explicit confirmation.
 
-`examples/research-update/skill/` is a small, illustrative Portable Skill (`research-update`) showing a compact lifecycle: choose context by audience, lead with the decision-relevant uncertainty, and keep observation separate from inference.
+## 4. Fork and create your own Skills
 
-## Design principles
+```bash
+git clone <your-fork-url>
+cd SkillFactory
+git remote add upstream https://github.com/EarthanLuo/SkillFactory.git
+git config core.hooksPath .githooks
+```
 
-A Chinese translation of this README is available at [`README.zh.md`](README.zh.md).
+Develop a Skill here:
 
-`human-triggered` · `portable` · `traceable` · `feedback-driven` · `non-automatic`
+```text
+workspace/<project>/skill/<your-skill>/
+```
 
-The repository intentionally uses plain Markdown and light metadata. It has no score system, user profile, database, or mandatory workflow.
+Keep its history in the project's `memory/` directory. When the Skill is ready, the pre-commit hook automatically copies it to the installable surface:
+
+```text
+workspace/<project>/skill/<your-skill>/
+        ── pre-commit ──> skills/<your-skill>/
+```
+
+Commit and push your fork. The next marketplace upgrade installs the updated repository, including your Skill.
+
+Do not edit generated copies under `skills/`. Every Skill must keep its `SKILL.md`, scripts, templates, and references inside its own directory.
+
+## Repository layout
+
+```text
+.codex-plugin/plugin.json  plugin manifest
+factory/                   source of the three built-in Skills
+skills/                    installable Skill surface
+workspace/                 projects, Portable Skills, and memory
+examples/                  example project
+.githooks/                 pre-commit synchronization
+```
+
+`factory/` and `workspace/` are authoring sources. `skills/` is the generated install surface consumed by the root plugin.
+
+For detailed behavior, read the README inside each Skill directory. See the [official OpenAI plugin documentation](https://developers.openai.com/plugins/build/plugins) for marketplace details.

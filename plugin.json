@@ -1,0 +1,28 @@
+{
+  "name": "skill-foundry",
+  "version": "0.1.0",
+  "description": "A Markdown-first Codex plugin for extracting experience, forging reusable Agent Skills, and evolving them from real feedback.",
+  "author": {
+    "name": "Skill Foundry"
+  },
+  "keywords": [
+    "skills",
+    "experience",
+    "research",
+    "skill development"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Skill Foundry",
+    "shortDescription": "Build and refine reusable Agent Skills.",
+    "longDescription": "Three built-in Skills that form a deliberate lifecycle: reverse-engineer experience, decide whether it belongs in a reusable Skill, and evolve that Skill only after real usage and explicit confirmation.",
+    "developerName": "Skill Foundry",
+    "category": "Productivity",
+    "capabilities": [
+      "Research",
+      "Writing",
+      "Skill development"
+    ],
+    "defaultPrompt": "Help me use Skill Foundry."
+  }
+}
