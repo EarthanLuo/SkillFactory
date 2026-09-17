@@ -1,5 +1,7 @@
 # Skill Foundry
 
+[English](README.md) | [中文](README.zh.md)
+
 Skill Foundry 是一个可以作为单个 Codex 插件安装的 GitHub 仓库，用于把经验变成可复用的 Skill。
 
 三个内置 Skill：

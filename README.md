@@ -1,5 +1,7 @@
 # Skill Foundry
 
+[English](README.md) | [中文](README.zh.md)
+
 Skill Foundry is a GitHub repository that installs as one Codex plugin. It helps turn experience into reusable Skills.
 
 The three built-in Skills are:
