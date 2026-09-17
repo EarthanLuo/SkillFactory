@@ -22,6 +22,8 @@ Use the bundled templates in `assets/templates/` when available (`PROJECT.md`, `
 
 - Accept many source types; do not assume the input is a video.
 - Separate what the source says, what the source actually does, why it may work, and your inference about transfer.
+- Preserve each source claim's scope before compressing it: retain the subject, model or version, environment, time, comparison baseline, and qualifiers when they affect the meaning. Mark an unavailable scope element as unknown; do not silently broaden it.
+- Treat a result observed under one condition as evidence about that condition, not the whole approach. Keep scoped empirical results separate from judgments about whether the underlying design may still transfer.
 - Ask what problem the experience solves and what judgment rule is underneath the advice.
 - Identify context-specific constraints, missing premises, counterexamples, and likely failure boundaries.
 - Preserve uncertainty. An Extraction is analysis, not user acceptance.

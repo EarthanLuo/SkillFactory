@@ -23,7 +23,7 @@ Why might it work?
 
 ## Conditions
 
-When might it hold?
+When might it hold? Carry forward any model, version, environment, time, baseline, or other scope limits from the Source.
 
 ## Hidden Assumptions
 
@@ -35,7 +35,7 @@ What, if anything, may be reusable?
 
 ## Uncertainty
 
-What cannot yet be confirmed?
+What cannot yet be confirmed? Do not turn a result scoped to one condition into a conclusion about the whole approach.
 
 ## Possible Skill
 
