@@ -1,2 +1,2 @@
-# Local Codex marketplace configuration is machine-specific.
-.agents/plugins/marketplace.json
+# Codex project-local configuration and discovery files are machine-specific.
+.agents/
